@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "churn"
+version = "1.0.0"
+description = "End-to-End Churn Prediction: Databricks Lakehouse, MLflow, Streamlit und CI/CD"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Mustafa Öztemiz" }]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["src", "tests", "app"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
