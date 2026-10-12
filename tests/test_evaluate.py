@@ -41,3 +41,11 @@ def test_best_threshold_is_in_grid():
 )
 def test_risk_level(score, expected):
     assert risk_level(score, threshold=0.39) == expected
+
+
+def test_feature_labels_are_neutral():
+    """Diagramm-Labels dürfen keine Richtung vorgeben (Balken können blau oder rot sein)."""
+    from churn.explain import FEATURE_LABEL, REASON_TEXT
+
+    assert FEATURE_LABEL.keys() == REASON_TEXT.keys()
+    assert not any(label.startswith(("Kein", "Kurze", "Hohe", "Wenige")) for label in FEATURE_LABEL.values())

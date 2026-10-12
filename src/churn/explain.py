@@ -34,6 +34,31 @@ REASON_TEXT = {
     "has_multiple_lines": "Mehrere Leitungen",
 }
 
+# Neutrale Merkmalsnamen für Diagramme: Balken können das Risiko erhöhen ODER senken,
+# daher keine Formulierung, die schon eine Richtung vorgibt („Kein …“, „Kurze …“)
+FEATURE_LABEL = {
+    "tenure": "Kundendauer",
+    "contract": "Vertragsart",
+    "contract_months": "Vertragslaufzeit",
+    "monthly_charges": "Monatsgebühr",
+    "total_charges": "Bisheriger Gesamtumsatz",
+    "avg_monthly_spend": "Durchschnittliche Ausgaben",
+    "charge_increase": "Preisentwicklung",
+    "num_addon_services": "Anzahl Zusatzdienste",
+    "has_protection": "OnlineSecurity/TechSupport",
+    "fiber_without_protection": "Glasfaser ohne Schutzdienste",
+    "internet_service": "Internetart",
+    "payment_method": "Zahlungsart",
+    "is_auto_payment": "Automatische Zahlung",
+    "is_new_customer": "Neukunde (≤ 12 Monate)",
+    "paperless_billing": "Papierlose Rechnung",
+    "senior_citizen": "Seniorenkunde",
+    "has_partner": "Partner",
+    "has_dependents": "Angehörige",
+    "has_phone": "Telefonvertrag",
+    "has_multiple_lines": "Mehrere Leitungen",
+}
+
 # Empfohlene Maßnahme je Hauptgrund (Vorschlag, mit dem Retention-Team abzustimmen)
 ACTIONS = {
     "contract": "Rabatt für Wechsel in einen Jahresvertrag anbieten",
@@ -92,6 +117,11 @@ def top_reasons(contrib_row: pd.Series, k: int = 3) -> list[str]:
 def reason_text(feature: str) -> str:
     """Verständlicher Text für ein Merkmal."""
     return REASON_TEXT.get(feature, feature)
+
+
+def feature_label(feature: str) -> str:
+    """Neutraler Name eines Merkmals (für Diagramme mit positiven und negativen Beiträgen)."""
+    return FEATURE_LABEL.get(feature, feature)
 
 
 def recommended_action(reasons: list[str]) -> str:

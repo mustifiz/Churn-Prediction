@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from churn.config import CATEGORY_VALUES, OFFER_COST, SCORES_PATH, SUCCESS_RATE  # noqa: E402
 from churn.data import clean_raw_data  # noqa: E402
-from churn.explain import contributions, reason_text  # noqa: E402
+from churn.explain import contributions, feature_label  # noqa: E402
 from churn.features import build_features  # noqa: E402
 from churn.score import ChurnModel, load_model, run_batch_scoring, score_customers  # noqa: E402
 
@@ -206,7 +206,7 @@ with tab_customer:
         with r2:
             contrib = contributions(model.pipeline, build_features(customer), model.reference).iloc[0]
             contrib_df = (contrib.rename("beitrag").reset_index().rename(columns={"index": "merkmal"}))
-            contrib_df["merkmal"] = contrib_df["merkmal"].map(reason_text)
+            contrib_df["merkmal"] = contrib_df["merkmal"].map(feature_label)
             contrib_df["richtung"] = contrib_df["beitrag"].map(
                 lambda v: "erhöht Risiko" if v > 0 else "senkt Risiko")
             contrib_df = contrib_df.reindex(contrib_df["beitrag"].abs().sort_values(ascending=False).index).head(8)
