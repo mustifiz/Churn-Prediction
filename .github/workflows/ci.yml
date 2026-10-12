@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint, Tests & Quality Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code auschecken
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 einrichten (wie Databricks Apps)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: ruff check src tests app
+
+      - name: Modell neu trainieren (Reproduzierbarkeit prüfen)
+        run: PYTHONPATH=src python -m churn.train
+
+      - name: Tests inkl. Quality Gate und App-Smoke-Test
+        run: pytest -v
+
+      - name: Metriken in die Zusammenfassung schreiben
+        if: always()
+        run: |
+          python - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          m = json.load(open("models/model_metadata.json"))
+          print("## Modellmetriken (Test-Split)\n")
+          print("| Metrik | Wert |\n|---|---|")
+          print(f"| Schwellenwert | {m['threshold']} |")
+          for k, v in m["test_metrics"].items():
+              print(f"| {k} | {v} |")
+          EOF
