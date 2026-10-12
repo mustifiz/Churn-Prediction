@@ -1,6 +1,6 @@
 # Laufzeit (App + Training) – Versionen fixiert, damit das gespeicherte Modell überall gleich lädt
 pandas==3.0.5
-numpy==2.5.3
+numpy==2.4.6  # 2.5 braucht Python 3.12, Databricks Apps nutzt 3.11
 scikit-learn==1.9.1
 joblib==1.6.0
 streamlit==1.65.0

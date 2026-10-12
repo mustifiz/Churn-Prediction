@@ -1,0 +1,6 @@
+# Databricks Apps: Startbefehl der Streamlit-App
+# Port, Adresse und Headless-Modus setzt die Databricks-Laufzeit automatisch.
+command: ["streamlit", "run", "app/streamlit_app.py"]
+env:
+  - name: "STREAMLIT_BROWSER_GATHER_USAGE_STATS"
+    value: "false"
